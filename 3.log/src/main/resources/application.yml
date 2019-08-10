@@ -1,0 +1,5 @@
+debug: true
+spring:
+  output:
+    ansi:
+      enabled: detect
