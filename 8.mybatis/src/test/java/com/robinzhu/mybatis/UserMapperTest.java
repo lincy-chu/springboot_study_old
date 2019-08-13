@@ -29,9 +29,9 @@ public class UserMapperTest {
     @Test
     public void testInsert() {
         User user = new User();
-        user.setCode("008");
-        user.setName("name008");
-        user.setStatus(StatusEnum.DISABLE);
+        user.setCode("002");
+        user.setName("name002");
+        user.setStatus(StatusEnum.ENABLE);
 
         // 新增
         userMapper.insert(user);
@@ -39,14 +39,14 @@ public class UserMapperTest {
 
     @Test
     public void testUpdate() {
-        User userUpd = userMapper.queryOne("6f31f1ccbc3f11e99ecaa4991496b6cc");
+        User userUpd = userMapper.queryOne("5b3e7f78bca511e99860509a4c2c7107");
         userUpd.setName("新燕");
         userMapper.update(userUpd);
     }
 
     @Test
     public void testDelete() {
-        userMapper.delete("6f31f1ccbc3f11e99ecaa4991496b6cc");
+        userMapper.delete("5b3e7f78bca511e99860509a4c2c7107");
     }
 
     @Test

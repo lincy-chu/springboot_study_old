@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.robinzhu</groupId>
-    <artifactId>mybatis</artifactId>
+    <artifactId>mybatis_xml</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>mybatis</name>
+    <name>mybatis_xml</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
@@ -23,6 +23,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
@@ -42,6 +43,7 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.16</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

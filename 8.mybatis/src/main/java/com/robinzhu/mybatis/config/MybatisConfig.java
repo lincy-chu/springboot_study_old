@@ -13,8 +13,7 @@ import org.springframework.context.annotation.Configuration;
  * 2019-08-11 21:04
  */
 @Configuration
-//@MapperScan(value = "com.robinzhu.mybatis.mapper") // 指定mapper扫描包路径地址
-@MapperScan(value = "com.robinzhu.mybatis.xmlMapper") // 指定mapper扫描包路径地址
+@MapperScan(value = "com.robinzhu.mybatis.mapper") // 指定mapper扫描包路径地址
 public class MybatisConfig {
     @Bean
     public ConfigurationCustomizer configurationCustomizer() {
