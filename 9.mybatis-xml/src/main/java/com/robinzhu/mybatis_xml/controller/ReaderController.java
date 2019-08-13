@@ -6,6 +6,7 @@ import com.robinzhu.mybatis_xml.service.ReaderService;
 import com.robinzhu.mybatis_xml.utils.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,7 +24,7 @@ public class ReaderController {
         return ResultUtil.success(service.findAll());
     }
 
-    @GetMapping(value = "/insert")
+    @PostMapping(value = "/insert")
     public Result insert(@Valid ReaderDo readerDo) {
         service.insert(readerDo);
         return ResultUtil.success();
