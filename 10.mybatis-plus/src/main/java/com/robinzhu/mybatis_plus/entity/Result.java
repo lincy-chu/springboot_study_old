@@ -1,6 +1,7 @@
 package com.robinzhu.mybatis_plus.entity;
 
 import lombok.Data;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * Create by zhudapeng

@@ -3,9 +3,6 @@ package com.robinzhu.mybatis_plus.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -43,4 +40,9 @@ public class Author {
     @NotBlank(message = "email不能为空")
     @Pattern(regexp = "^\\s*\\w+(?:\\.{0,1}[\\w-]+)*@[a-zA-Z0-9]+(?:[-.][a-zA-Z0-9]+)*\\.[a-zA-Z]+\\s*$", message = "邮箱格式不正确")
     private String email;
+
+    private String managerId;
+
+    @NotNull(message = "createTime字段不能为空")
+    private LocalDateTime createTime;
 }

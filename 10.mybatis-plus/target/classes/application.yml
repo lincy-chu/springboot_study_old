@@ -3,10 +3,15 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/springboot?useSSL=false&useUnicode=true&characterEncoding=utf-8
+    url: jdbc:mysql://127.0.0.1:3306/springboot?characterEncoding=utf-8&serverTimezone=GMT%2B8
     username: root
     password: zdp1985@0829ZDP
 
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl # 这个配置会将执行的sql打印处理，在开发或测试的时候可以用
+
+# 日志输出
+logging:
+  level:
+    com.robinzhu.mybatis_plus.entity: trace

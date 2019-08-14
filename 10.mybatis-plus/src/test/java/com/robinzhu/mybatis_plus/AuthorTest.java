@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.sql.Timestamp;
+import java.util.Date;
+
 /**
  * Create by zhudapeng
  * 2019-08-13 21:53
@@ -24,9 +27,11 @@ public class AuthorTest {
     @Test
     public void insert() {
         Author user = new Author();
-        user.setName("新燕");
-        user.setAge(36);
-        user.setEmail("1365076679@126.com");
+        user.setName("张胜男");
+        user.setAge(22);
+        user.setEmail("zsn@baomidou.com");
+        user.setManagerId("c62d6a6488f9d60b60d7e48eeb80c704");
+//        user.setCreate_time(new Timestamp(new Date().getTime()));
         int rows = userMapper.insert(user); // 返回影响记录数
         log.info(String.valueOf(user));
         Assert.assertEquals(1, rows);
