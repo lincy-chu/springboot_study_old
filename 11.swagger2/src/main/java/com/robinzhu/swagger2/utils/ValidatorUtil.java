@@ -1,6 +1,6 @@
 package com.robinzhu.swagger2.utils;
 
-import com.robinzhu.mybatis_plus.entity.CommonException;
+import com.robinzhu.swagger2.entity.CommonException;
 import org.hibernate.validator.HibernateValidator;
 import org.hibernate.validator.HibernateValidatorConfiguration;
 

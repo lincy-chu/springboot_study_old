@@ -1,6 +1,6 @@
 package com.robinzhu.swagger2.utils;
 
-import com.robinzhu.mybatis_plus.entity.Result;
+import com.robinzhu.swagger2.entity.Result;
 
 /**
  * Create by zhudapeng

@@ -4,9 +4,9 @@ package com.robinzhu.swagger2.exceptionHandler;
  * Create by zhudapeng
  * 2019-08-11 10:16
  */
-import com.robinzhu.mybatis_plus.entity.CommonException;
-import com.robinzhu.mybatis_plus.entity.Result;
-import com.robinzhu.mybatis_plus.utils.ResultUtil;
+import com.robinzhu.swagger2.entity.CommonException;
+import com.robinzhu.swagger2.entity.Result;
+import com.robinzhu.swagger2.utils.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;

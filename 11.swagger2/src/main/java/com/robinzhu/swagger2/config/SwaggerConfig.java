@@ -39,8 +39,8 @@ public class SwaggerConfig {
     // 设置api信息
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("SpringBoot-Swagger2继承和使用")
-                .description("描述") // 描述
+                .title("SpringBoot-Swagger2集成和使用")
+                .description("描述") // 描述, 1.5版本后不再支持
                 .contact(new Contact("robin zhu", null, "1365076679@qq.com")) // 联系方式
                 .version("1.0.0")
                 .build();

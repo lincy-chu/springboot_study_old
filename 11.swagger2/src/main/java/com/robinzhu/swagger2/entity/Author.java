@@ -2,6 +2,7 @@ package com.robinzhu.swagger2.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -9,6 +10,8 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 /**
@@ -32,15 +35,23 @@ public class Author {
      *  ID_WORKER_STR: ID_WORKER_STR(5, "字符串全局唯一ID")
      */
 
+    @ApiModelProperty(value = "id主键", dataType = "String", name = "id", example = "132db284bdd2b6907624cfb9d82998c2")
     @TableId(type = IdType.UUID)
     private String id;
     // 姓名
+    @ApiModelProperty(value = "姓名", dataType = "String", name = "name", example = "朱朱")
     @NotNull(message = "name字段不能为空")
     private String name;
     // 年龄
+    @ApiModelProperty(value = "年龄", dataType = "Integer", name = "age", example = "18")
     private Integer age;
     // 邮箱
+    @ApiModelProperty(value = "邮箱", dataType = "String", name = "email", example = "123456@qq.coom")
     @NotBlank(message = "email不能为空")
     @Pattern(regexp = "^\\s*\\w+(?:\\.{0,1}[\\w-]+)*@[a-zA-Z0-9]+(?:[-.][a-zA-Z0-9]+)*\\.[a-zA-Z]+\\s*$", message = "邮箱格式不正确")
     private String email;
+
+    private String managerId;
+
+    private LocalDateTime createTime;
 }
