@@ -60,6 +60,20 @@ public class BatisPlusController {
         return ResultUtil.success();
     }
 
+    /**
+     * @ApiImplicitParams: 用在请求的方法上，表示一组参数说明
+     *   @ApiImplicitParam: 常用在@ApiImplicitParams注解中或单独使用，指定一个请求参数的各方面
+     *      name：参数名
+     *      required：参数的汉字说明、解释
+     *      paramType：参数放在什么地方
+     *          header --> 请求参数的获取：@RequestHeader
+     *          query  --> 请求参数的获取：@RequestParam
+     *          path(用于restful接口) --> 请求参数的获取：@PathVariable
+     *          body(不常用)
+     *          form(不常用)
+     *      dataType：参数类型，默认String，其他值如dataType="Integer"
+     *      defaultValue: 参数的默认值
+     */
     @GetMapping("/page")
     @ApiOperation(value = "分页查询")
     @ApiImplicitParams({
