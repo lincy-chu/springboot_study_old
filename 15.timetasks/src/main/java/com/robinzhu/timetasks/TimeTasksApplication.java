@@ -1,7 +1,9 @@
 package com.robinzhu.timetasks;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
  * 定时任务
@@ -14,10 +16,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  *      Quartz：一款功能强大的任务调度器，可以实现较为复杂的调度功能，如每个月一号执行、每天凌晨执行、每周五执行等等，还支持分布式调度，就是配置稍显复杂。
  */
 @SpringBootApplication
-public class TimetasksApplication {
+@EnableScheduling
+@Slf4j
+public class TimeTasksApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(TimetasksApplication.class, args);
+        SpringApplication.run(TimeTasksApplication.class, args);
+        log.info("TimeTask启动!");
     }
 
 }
