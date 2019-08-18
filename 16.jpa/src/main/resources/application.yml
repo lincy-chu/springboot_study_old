@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/springboot?characterEncoding=utf-8
+    username: root
+    password: zdp1985@0829ZDP
+    druid:
+      initial-size: 5
+      max-active: 20
+      min-idle: 5
+      max-wait: 6000
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
