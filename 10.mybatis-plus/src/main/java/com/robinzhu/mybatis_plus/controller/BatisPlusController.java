@@ -1,9 +1,12 @@
 package com.robinzhu.mybatis_plus.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.robinzhu.mybatis_plus.entity.Author;
 import com.robinzhu.mybatis_plus.entity.Result;
 import com.robinzhu.mybatis_plus.mapper.AuthorMapper;
 import com.robinzhu.mybatis_plus.utils.ResultUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +19,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/batisPlus")
+@Slf4j
 public class BatisPlusController {
     @Autowired
     AuthorMapper authorMapper;
@@ -29,6 +33,14 @@ public class BatisPlusController {
     @GetMapping("/list")
     public Result list() {
         List<Author> authors = authorMapper.selectList(null);
+        return ResultUtil.success(authors);
+    }
+
+    @GetMapping("/getByName")
+    public Result getByName() {
+        QueryWrapper<Author> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(Author::getName, "robinzhu");
+        List<Author> authors = authorMapper.selectList(queryWrapper);
         return ResultUtil.success(authors);
     }
 }

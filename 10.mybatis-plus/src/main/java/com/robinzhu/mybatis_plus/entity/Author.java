@@ -1,6 +1,7 @@
 package com.robinzhu.mybatis_plus.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 import javax.validation.constraints.NotBlank;
@@ -41,8 +42,10 @@ public class Author {
     @Pattern(regexp = "^\\s*\\w+(?:\\.{0,1}[\\w-]+)*@[a-zA-Z0-9]+(?:[-.][a-zA-Z0-9]+)*\\.[a-zA-Z]+\\s*$", message = "邮箱格式不正确")
     private String email;
 
+    @TableField(value = "manager_id")
     private String managerId;
 
     @NotNull(message = "createTime字段不能为空")
+    @TableField(value = "create_time")
     private LocalDateTime createTime;
 }
