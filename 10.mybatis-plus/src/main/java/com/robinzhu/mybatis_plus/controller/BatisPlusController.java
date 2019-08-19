@@ -2,6 +2,7 @@ package com.robinzhu.mybatis_plus.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.mysql.cj.QueryResult;
 import com.robinzhu.mybatis_plus.entity.Author;
 import com.robinzhu.mybatis_plus.entity.Result;
 import com.robinzhu.mybatis_plus.mapper.AuthorMapper;
@@ -40,6 +41,16 @@ public class BatisPlusController {
     public Result getByName() {
         QueryWrapper<Author> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().eq(Author::getName, "robinzhu");
+        List<Author> authors = authorMapper.selectList(queryWrapper);
+        return ResultUtil.success(authors);
+    }
+
+    @GetMapping("/getMoreParams")
+    public Result getMoreParams() {
+        QueryWrapper<Author> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda()
+                .and(obj -> obj.lt(Author::getAge, 19))
+                .like(Author::getName, "元璋");
         List<Author> authors = authorMapper.selectList(queryWrapper);
         return ResultUtil.success(authors);
     }
