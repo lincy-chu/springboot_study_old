@@ -1,14 +1,11 @@
 package com.robinzhu.mybatis_plus;
 
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.robinzhu.mybatis_plus.entity.Author;
-import com.robinzhu.mybatis_plus.entity.Result;
 import com.robinzhu.mybatis_plus.mapper.AuthorMapper;
-import com.robinzhu.mybatis_plus.utils.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.junit.Test;
