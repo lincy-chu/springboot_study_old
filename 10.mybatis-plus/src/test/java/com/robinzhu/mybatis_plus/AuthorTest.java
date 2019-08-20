@@ -2,7 +2,9 @@ package com.robinzhu.mybatis_plus;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.robinzhu.mybatis_plus.entity.Author;
 import com.robinzhu.mybatis_plus.entity.Result;
 import com.robinzhu.mybatis_plus.mapper.AuthorMapper;
@@ -174,11 +176,26 @@ public class AuthorTest {
     public void selectObjs() {
         /**
          * 根据Wrapper条件，查询全部记录
-         * 注意：只返回第一个字段的值
+         * 注意：只返回第一个字段的值，比如第一个字段为author_id，则只返回其值
          */
         Author author = userMapper.selectById("070b4c7eabff758ed333cf63529d27b7");
         List<Object> authors = userMapper.selectObjs(new QueryWrapper<Author>().eq("email", author.getEmail()));
         authors.forEach(System.out::println);
+    }
+
+    @Test
+    public void selectPageTest() {
+        /**
+         * 根据entity条件，查询全部记录（并翻页）
+         * @param page 分页查询条件（可为RowBounds.DEFAULT）
+         * @param queryWrapper 实体对象封装造作类（可为null）
+         * @return 实体分页对象
+         */
+        IPage<Author> page = new Page<>(1, 5);
+        QueryWrapper wrapper = Wrappers.query();
+        wrapper.like("author_name", "老胡");
+        IPage<Author> authorIPage = userMapper.selectPage(page, wrapper);
+        System.out.println(authorIPage);
     }
 
     @Test
