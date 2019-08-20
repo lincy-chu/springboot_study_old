@@ -1,9 +1,12 @@
 package com.robinzhu.mybatis_plus;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.robinzhu.mybatis_plus.entity.Author;
+import com.robinzhu.mybatis_plus.entity.Result;
 import com.robinzhu.mybatis_plus.mapper.AuthorMapper;
+import com.robinzhu.mybatis_plus.utils.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.junit.Test;
@@ -12,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -43,6 +45,38 @@ public class AuthorTest {
     }
 
     @Test
+    public void deleteByMap() {
+        /**
+         * 根据map进行删除
+         */
+        Map<String, Object> map = new HashMap<>();
+        map.put("author_name", "朱棣文"); // 多个字段时相当于同时满足条件
+        Integer integer = userMapper.deleteByMap(map);
+        if (integer.equals(1)) {
+            System.out.println("根据map删除成功!");
+        } else {
+            System.out.println("根据map删除失败");
+        }
+    }
+
+    @Test
+    public void delete() {
+        /**
+         * 根据entity条件，删除记录
+         * @params wrapper实体对象封装操作类，可以为null
+         * @return 删除成功记录数
+         */
+        QueryWrapper<Author> authorWrapper = new QueryWrapper<>();
+        authorWrapper.like("author_name", "朱祁钰").or().like("author_name", "朱祁镇");
+        Integer integer = userMapper.delete(authorWrapper);
+        if (integer.equals(2)) {
+            System.out.println("删除成功");
+        } else {
+            System.out.println("删除失败");
+        }
+    }
+
+    @Test
     public void selectByIdTest() {
         Author author = userMapper.selectById("132db284bdd2b6907624cfb9d82998c2");
         System.out.println(author);
@@ -50,14 +84,54 @@ public class AuthorTest {
 
     @Test
     public void selectByIds() {
+        /**
+         * 根据id批量删除
+         */
         List<String> list = Arrays.asList("6783fcbae1ec503a5e93d9725789ef5c", "c62d6a6488f9d60b60d7e48eeb80c704", "02f4545f737ff0ab58c9cbf8e7f5d843");
         List<Author> authors = userMapper.selectBatchIds(list); // selectBatchIds接收id数组
         authors.forEach(System.out::println);
     }
 
     @Test
+    public void updateByIdTest() {
+        /**
+         * 根据id更新数据
+         * @param entity实体对象
+         * @return 修改记录数
+         */
+        Author author = new Author();
+        String id = "070b4c7eabff758ed333cf63529d27b7";
+        author.setId(id);
+        author.setName("朱明");
+        author.setEmail("zhuzhu123@qq.com");
+        Integer integer = userMapper.updateById(author);
+        if (integer.equals(1)) {
+            System.out.println(userMapper.selectById(id));
+        } else {
+            System.out.println("更新失败");
+        }
+    }
+
+    @Test
+    public void updateTest() {
+        /**
+         * 根据whereEntity条件，更新记录
+         * @param entity 实体对象（set条件值，可为null）
+         * @param updateWrapper 实体对象封装操作类（可为null，里面的entity用于生成where语句）
+         * @return 修改成功记录数
+         */
+        Author author = new Author();
+        author.setName("老胡");
+        QueryWrapper queryWrapper = Wrappers.query();
+        queryWrapper.likeRight("author_name", "朱");
+        Integer integer = userMapper.update(author, queryWrapper);
+        System.out.println("更新条数" + integer);
+    }
+
+    @Test
     public void selectByMap() { // 通过map形成多条件并列查找
         /**
+         * 通过多条件进行删除
          * map.put("name", "刘红雨")
          * map.put("age", 30)
          * = where name = "刘红雨" and age = 30
@@ -68,6 +142,43 @@ public class AuthorTest {
         map.put("manager_id", "c62d6a6488f9d60b60d7e48eeb80c704");
         List<Author> author = userMapper.selectByMap(map);
         author.forEach(System.out::println);
+    }
+
+    @Test
+    public void selectOne() {
+        /**
+         * 根据entity条件查找，查询一条
+         * @param queryWrapper 实体对象
+         * @return 实体
+         */
+        QueryWrapper<Author> wrapper = Wrappers.query();
+        wrapper.eq("author_id", "070b4c7eabff758ed333cf63529d27b7"); // eq等于
+        Author author = userMapper.selectOne(wrapper);
+        System.out.println(author);
+    }
+
+    @Test
+    public void selectCount() {
+        /**
+         * 根据wrapper条件，查询总记录数
+         * @param queryWrapper 实例对象
+         * @return 满足条件的记录条数
+         */
+        QueryWrapper queryWrapper = Wrappers.query();
+        queryWrapper.likeRight("email", "123");
+        Integer integer = userMapper.selectCount(queryWrapper);
+        System.out.println(integer);
+    }
+
+    @Test
+    public void selectObjs() {
+        /**
+         * 根据Wrapper条件，查询全部记录
+         * 注意：只返回第一个字段的值
+         */
+        Author author = userMapper.selectById("070b4c7eabff758ed333cf63529d27b7");
+        List<Object> authors = userMapper.selectObjs(new QueryWrapper<Author>().eq("email", author.getEmail()));
+        authors.forEach(System.out::println);
     }
 
     @Test
