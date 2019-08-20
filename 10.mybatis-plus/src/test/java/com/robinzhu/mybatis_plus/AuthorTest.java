@@ -234,4 +234,65 @@ public class AuthorTest {
         List<Author> list = userMapper.selectList(queryWrapper);
         list.forEach(System.out::println);
     }
+
+    @Test
+    public void selectByWrapper3() {
+        /**
+         * 4.创建日期为2019年8月14日且直属上级为姓名为王姓
+         * date_format(create_time, '%Y-%m-%d') and manager_id in (select author_id from author where author_name like '王%')
+         */
+        QueryWrapper<Author> queryWrapper = new QueryWrapper<>();
+        queryWrapper.apply("date_format(create_time, '%Y-%m-%d') = {0}", "2019-08-14") // 可防sql注入
+                .inSql("manager_id", "select author_id from author where author_name like '王%'");
+        List<Author> list = userMapper.selectList(queryWrapper);
+        list.forEach(System.out::println);
+    }
+
+    @Test
+    public void selectByWrapper4() {
+        /**
+         * 5.名字为王姓并且（年龄小于40或邮箱不为空）
+         * author_name like '王%' and (age < 40 or email is not null)
+         */
+        QueryWrapper<Author> queryWrapper = Wrappers.query();
+        queryWrapper.likeRight("author_name", "王").and(wq -> wq.lt("age", 40).or().isNotNull("email"));
+        List<Author> list = userMapper.selectList(queryWrapper);
+        list.forEach(System.out::println);
+    }
+
+    @Test
+    public void selectByWrapper5() {
+        /**
+         * 6.名字为王姓或者（年龄小于40并且年龄大于20并且邮箱不为空）
+         * name like '王%' or (age < 40 and age > 20 and email is not null)
+         */
+        QueryWrapper<Author> queryWrapper = new QueryWrapper<>();
+        queryWrapper.likeRight("author_name", "王").or().lt("age", 40).gt("age", 20).isNotNull("email"); // lt小于 gt大于
+        List<Author> authors = userMapper.selectList(queryWrapper);
+        authors.forEach(System.out::println);
+    }
+
+    @Test
+    public void selectByWrapper6() {
+        /**
+         * 7.（年龄小于40或邮箱不为空）并且名字为王姓
+         * (age < 40 or email is not null) and name like '王%'
+         */
+        QueryWrapper<Author> queryWrapper = Wrappers.query();
+        queryWrapper.nested(wq -> wq.lt("age", 40).or().isNotNull("email")).likeRight("author_name", "王");
+        List<Author> authors = userMapper.selectList(queryWrapper);
+        authors.forEach(System.out::println);
+    }
+
+    @Test
+    public void selectByWrapper7() {
+        /**
+         * 8.年龄为30、31、34、35
+         * age in (30, 31, 34, 35)
+         */
+        QueryWrapper<Author> queryWrapper = new QueryWrapper<>();
+        queryWrapper.in("age", Arrays.asList(30, 31, 34, 35));
+        List<Author> list = userMapper.selectList(queryWrapper);
+        list.forEach(System.out::println);
+    }
 }
