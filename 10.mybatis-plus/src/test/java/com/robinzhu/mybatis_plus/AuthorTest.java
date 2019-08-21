@@ -320,4 +320,37 @@ public class AuthorTest {
         List<Author> authors = userMapper.selectList(queryWrapper);
         authors.forEach(System.out::println);
     }
+
+    /**
+     * mybatis-plus 条件参数说明
+     * eq   等同于=
+     * ne   不等于<>
+     * gt   大于>
+     * lt   小于<
+     * ge   大于等于
+     * le   小于等于
+     * between   在指定范围内
+     * notBetween   不在指定范围内
+     * like   %值%
+     * notLike   not like %值%
+     * likeLeft   %值 以什么结尾
+     * likeRight  值% 以什么开头
+     * isNotNull  字段不为null
+     * in   字段在范围内
+     * notIn  字段不在范围内
+     * inSql 子查询
+     * notInSql 子查询not in
+     * groupBy 分组
+     * orderByAsc 按指定字段降序排列
+     * orderByDesc 按指定字段升序排列
+     * orderBy 多字段排序条件 如：orderBy(true, false, "age", "create_time") 等价于 order by age desc, create_time asc
+     * or 拼接的or，因为默认是and拼接
+     * nested 嵌套函数，括号里面的语句、括号前面没有and或or
+     * apply 拼接sql，最好用占位符形式（反之sql注入）
+     * last 拼接在sql后面 如：wrapper.apply("name like {0} and age > {1}", "%燕", 18).last("limit 1")
+     * exists 拼接sql语句，判断where前面的每行数据是否满足exists的条件，如果满足则返回  如：wrapper.exists("select * from author a where a.age < 30 and user.age = u.age")
+     * notExists 拼接sql语句，判断where前面的每行数据是否满足exists的条件，如果不满足则返回
+     *
+     * 更多：https://blog.csdn.net/weixin_37703281/article/details/91364759
+     */
 }
