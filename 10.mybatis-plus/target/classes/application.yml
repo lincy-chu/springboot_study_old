@@ -5,11 +5,12 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/springboot?characterEncoding=utf-8&serverTimezone=GMT%2B8
     username: root
-    password: zdp1985@0829ZDP
+    password: zdp19850829
 
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl # 这个配置会将执行的sql打印处理，在开发或测试的时候可以用
+    map-underscore-to-camel-case: true # 是否启用驼峰命名
 
 # 日志输出
 logging:

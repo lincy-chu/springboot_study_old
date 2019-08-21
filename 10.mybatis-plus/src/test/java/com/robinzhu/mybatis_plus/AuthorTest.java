@@ -295,4 +295,29 @@ public class AuthorTest {
         List<Author> list = userMapper.selectList(queryWrapper);
         list.forEach(System.out::println);
     }
+
+    @Test
+    public void selectByWrapper8() {
+        /**
+         * 选择输出部分字段
+         * 其他字段值显示为null
+         */
+        QueryWrapper<Author> queryWrapper = Wrappers.query();
+        // queryWrapper.select("author_id", "author_name"); // 会出现主键为null的问题
+        queryWrapper.select(Author.class, info -> info.getColumn().equals("author_id") && info.getColumn().equals("author_name")); // 这样做不会出现主键为null的问题
+        List<Author> authors = userMapper.selectList(queryWrapper);
+        authors.forEach(System.out::println);
+    }
+
+    @Test
+    public void selectByWrapper9() {
+        /**
+         * 排除部分字段
+         * 被排除的字段值返回null
+         */
+        QueryWrapper<Author> queryWrapper = Wrappers.query();
+        queryWrapper.select(Author.class, info -> !info.getColumn().equals("create_time") && !info.getColumn().equals("manager_id"));
+        List<Author> authors = userMapper.selectList(queryWrapper);
+        authors.forEach(System.out::println);
+    }
 }
