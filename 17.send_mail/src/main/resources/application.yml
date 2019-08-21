@@ -1,0 +1,10 @@
+spring:
+  mail:
+    host: smtp.qq.com # 邮件服务器
+    username: 1365076679@qq.com # 发送人
+    password: ojpvyatlzzvdhjbg # 邮箱授权密码
+    default-encoding: UTF-8
+  servlet:
+    multipart:
+      max-request-size: 10MB # 上传文件总的最大值
+      max-file-size: 10MB # 单个文件的最大值
