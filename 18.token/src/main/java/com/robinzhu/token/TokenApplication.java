@@ -61,11 +61,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  *       密钥secret是保存在服务端的，服务端会根据这个密钥进行生成token和进行验证，所以要保护好
  * 详情见：https://www.jianshu.com/p/e88d3f8151db
  */
+
 @SpringBootApplication
 public class TokenApplication {
-
     public static void main(String[] args) {
         SpringApplication.run(TokenApplication.class, args);
     }
-
 }

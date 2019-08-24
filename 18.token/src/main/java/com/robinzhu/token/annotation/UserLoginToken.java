@@ -6,8 +6,6 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Create by zhudapeng
- * 2019-08-23 22:06
  * 自定义注解，用来验证需要登录才能进行操作
  *
  * @Target：注释的作用目标
@@ -28,6 +26,7 @@ import java.lang.annotation.Target;
  * @Document：说明该注解将被包含在javadoc中
  * @Inherited：说明子类可以继承父类中的该注解
  */
+
 @Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface UserLoginToken {
