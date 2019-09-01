@@ -16,8 +16,8 @@ public class MybatisPlusConfig {
         return new PaginationInterceptor();
     }
 
-    @Bean
-    public ISqlInjector sqlInjector() { // 注册sqlInjector，3.1.1之后不需要注册，对于3.1.1以下的如果没有注册这个Bean则逻辑删除不生效（为物理删除）
-        return new LogicSqlInjector();
-    }
+//    @Bean
+//    public ISqlInjector sqlInjector() { // 注册sqlInjector，3.1.1之后不需要注册，对于3.1.1以下的如果没有注册这个Bean则逻辑删除不生效（为物理删除）
+//        return new LogicSqlInjector();
+//    }
 }

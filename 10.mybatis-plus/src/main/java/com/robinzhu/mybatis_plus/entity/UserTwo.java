@@ -37,12 +37,12 @@ public class UserTwo {
 
     @NotNull(message = "createTime不能为空")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @TableField(value = "create_time")
+    @TableField(value = "create_time", fill = FieldFill.INSERT) // 设置插入时自动填充注解，需要添加处理器才能生效
     private LocalDateTime createTime; // 创建时间
 
     @NotNull(message = "updateTime不能为空")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @TableField(value = "update_time")
+    @TableField(value = "update_time", fill = FieldFill.UPDATE) // 设置更新时自动填充注解，需要添加处理器才能生效
     private LocalDateTime updateTime; // 更新时间
 
     @NotNull(message = "version不能为空")
@@ -50,5 +50,6 @@ public class UserTwo {
 
     @NotNull(message = "deleted不能为空")
     @TableLogic(value = "0", delval = "1") // 注解逻辑删除
+    @TableField(select = false) // 注解当前字段不被显示出来
     private Integer deleted; // 逻辑删除标识
 }
