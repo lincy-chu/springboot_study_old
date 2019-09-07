@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/springboot?useSSL=false&characterEncoding=utf-8&useLegacyDatetimeCode=true
+    url: jdbc:mysql://127.0.0.1:3306/mybatis?useSSL=false&characterEncoding=utf-8&useLegacyDatetimeCode=true
     username: root
     password: zdp1985@0829ZDP
 mybatis:

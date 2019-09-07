@@ -8,6 +8,12 @@
         <typeAlias alias="LinkedHashMap" type="java.util.LinkedHashMap" />
         <typeAlias alias="ArrayList" type="java.util.ArrayList" />
         <typeAlias alias="LinkedList" type="java.util.LinkedList" />
-        <typeAlias type="java.lang.String" alias="String"/>
+        <typeAlias alias="String" type="java.lang.String" />
+        <!--
+         类型别名是为Java类型命名的一个短的名字，它只与xml配置有关，存在的意义仅在用于减少类完全限定名的冗余，其缺点：每一个entity类都要去配置
+         解决方案：使用扫描包，扫描指定包下的所有类，扫描之后的别名就是类名，建议使用的时候和类名保持一致
+         -->
+<!--        <typeAlias alias="user" type="com.robinzhu.mybatis_xml.entity.User" />-->
+        <package name="com.robinzhu.mybatis_xml.entity"/>
     </typeAliases>
 </configuration>

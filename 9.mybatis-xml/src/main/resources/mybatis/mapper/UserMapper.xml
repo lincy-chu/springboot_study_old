@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.robinzhu.mybatis_xml.mapper.UserMapper">
+    <resultMap id="BaseResultMap" type="User">
+        <id property="id" column="id" jdbcType="VARCHAR" />
+        <result property="userName" column="user_name" jdbcType="VARCHAR" />
+        <result property="name" column="name" jdbcType="VARCHAR" />
+        <result property="age" column="age" jdbcType="INTEGER" />
+        <result property="sex" column="sex" jdbcType="INTEGER" />
+        <result property="birthday" column="birthday" jdbcType="DATE" />
+        <result property="createTime" column="create_time" jdbcType="TIME" />
+        <result property="updateTime" column="update_time" jdbcType="TIME" />
+    </resultMap>
+
+    <select id="findAll" resultMap="BaseResultMap">
+        select id, user_name, name, age, sex, birthday, create_time, update_time from user;
+    </select>
+    
+    <select id="getOne" parameterType="String" resultMap="BaseResultMap">
+        select id, user_name, name, age, sex, birthday, create_time, update_time from user where id = #{id};
+    </select>
+
+    <!--
+      1.#{}，预编译的方式，使用占位符替换，防止sql注入
+      resultType:sql语句查询结果集的封装类型，使用动态代理后和方法的返回类型一致
+      -->
+    <select id="login" resultType="User" resultMap="BaseResultMap">
+        select id, user_name, name, age, sex, birthday, create_time, update_time from user where user_name = #{userName} and password = #{password};
+    </select>
+    <select id="userCount" resultType="java.lang.Integer">
+        select count(*) from user;
+    </select>
+    <select id="getByPager" resultType="User" resultMap="BaseResultMap">
+        select id, user_name, name, age, sex, birthday, create_time, update_time from user limit #{offset}, #{pageSize};
+    </select>
+
+    <!--
+        id：唯一标识，在同一命名空间下保持一致
+        parameterType：参数的类型
+        keyColumn：指定数据库的主键
+        keyProperty：主键对应的类属性名
+    -->
+    <insert id="insert" parameterType="User">
+        <selectKey keyColumn="id" keyProperty="id" resultType="string" order="BEFORE">
+            select replace(uuid(), '-', '')
+        </selectKey>
+        insert into user(id, user_name, password, name, age, sex, birthday, create_time, update_time) values (#{id}, #{userName}, #{password}, #{name}, #{age}, #{sex}, #{birthday}, now(), now());
+    </insert>
+
+    <update id="update" parameterType="User">
+        update user
+        <trim prefix="set" suffixOverrides=",">
+            <if test="userName != null">user_name = #{userName},</if>
+            <if test="password != null">password = #{password},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="age != null">age = #{age},</if>
+            <if test="sex != null">sex = #{sex},</if>
+            <if test="birthday != null">birthday = #{birthday},</if>
+            update_time = now(),
+        </trim>
+        where id = #{id};
+    </update>
+
+    <delete id="delete" parameterType="String">
+        delete from user where id = #{id}
+    </delete>
+</mapper>
