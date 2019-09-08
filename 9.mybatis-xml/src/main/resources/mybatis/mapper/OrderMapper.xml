@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.robinzhu.mybatis_xml.mapper.OrderMapper">
+    <resultMap id="OrderUserResultMap" type="Order" autoMapping="true">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="order_number" property="orderNumber" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <!--association:完成子对象的映射-->
+        <!--property:子对象在父对象中的属性名-->
+        <!--javaType:子对象的java类型-->
+        <!--autoMapping:完成子对象的自动映射，若开启驼峰，则按驼峰匹配-->
+        <!--resultMap需要设置为UserMapper的BaseResultMap，否则返回字段不全-->
+        <association property="user" javaType="User" resultMap="com.robinzhu.mybatis_xml.mapper.UserMapper.BaseResultMap" autoMapping="true">
+            <id column="user_id" property="id" />
+        </association>
+    </resultMap>
+
+    <resultMap id="OrderUserDetailResultMap" type="Order" autoMapping="true">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="order_number" property="orderNumber" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <association property="user" javaType="User" resultMap="com.robinzhu.mybatis_xml.mapper.UserMapper.BaseResultMap" autoMapping="true">
+            <id column="user_id" property="id" />
+        </association>
+        <collection property="detailList" javaType="List" ofType="OrderDetail" resultMap="com.robinzhu.mybatis_xml.mapper.OrderDetailMapper.orderDetailResultMap" autoMapping="true">
+            <id column="order_number" property="orderId"/>
+        </collection>
+    </resultMap>
+
+    <select id="queryOrderWithUserByOrderNo" resultMap="OrderUserResultMap">
+        select * from tb_order o left join user u on o.user_id = u.id where o.order_number = #{orderNo}
+    </select>
+
+    <insert id="createOrder" parameterType="Order">
+        <selectKey keyColumn="id" keyProperty="id" resultType="string" order="BEFORE">
+            select replace(uuid(), '-', '')
+        </selectKey>
+        insert into `tb_order`(id, user_id, order_number, create_time, update_time) values (#{id}, #{userId}, #{orderNumber}, now(), now());
+    </insert>
+
+    <select id="queryOrderWithUserAndDetailByOrderNo" resultMap="OrderUserDetailResultMap">
+        select * from tb_order o
+            left join user u on o.user_id = u.id
+            left join tb_order_detail od on o.order_number = od.order_id
+        where o.order_number = #{orderNo};
+    </select>
+</mapper>

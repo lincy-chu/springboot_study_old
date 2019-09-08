@@ -1,5 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<!--
+    mybatis的配置文件包含了影响mybatis行为深远的设置和属性信息。文档的顶层结构如下：
+        configuration 配置
+            properties 属性
+            settings   设置
+            typeAliases 类型命名
+            typeHandlers 类型处理器
+            objectFactory 对象工厂
+            plugins 插件
+            environments 环境
+                environment 环境变量
+                    transactionManager 事务管理器
+                    dataSource 数据源
+            databaseIdProvider 数据库厂商标识
+            mappers 映射器
+
+    1.properties属性读取外部资源
+        properties配置的属性都是可外部配置且可动态替换的，即可以在典型的Java属性文件中配置，亦可通过properties元素的子元素来传递。
+    2.settings设置
+        mapUnderscoreToCamelCase 是否自动开启驼峰命名原则映射
+    3.typeAliases
+        类型别名是为Java类型命名的一个短的名字，它只是和XML配置有关，存在的意义仅在于用来减少类完全限定名的冗余
+    4.mappers
+        告诉mybatis到哪里去找到SQL映射语句
+-->
 <configuration>
     <typeAliases>
         <typeAlias alias="Integer" type="java.lang.Integer" />

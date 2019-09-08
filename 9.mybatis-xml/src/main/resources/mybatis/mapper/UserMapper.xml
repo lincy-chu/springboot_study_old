@@ -24,21 +24,37 @@
       1.#{}，预编译的方式，使用占位符替换，防止sql注入
       resultType:sql语句查询结果集的封装类型，使用动态代理后和方法的返回类型一致
       -->
+    <!--
+       Mapper XML文件详解
+       1.select - 书写查询sql语句
+           select中的几个属性说明：
+               id属性：当前名称空间下的statement的唯一标识，必须。要求id和mapper接口中的方法名一致
+               resultType：将结果集映射为Java的对象类型，必须（和resultMap二选一）
+    -->
     <select id="login" resultType="User" resultMap="BaseResultMap">
         select id, user_name, name, age, sex, birthday, create_time, update_time from user where user_name = #{userName} and password = #{password};
     </select>
     <select id="userCount" resultType="java.lang.Integer">
         select count(*) from user;
     </select>
-    <select id="getByPager" resultType="User" resultMap="BaseResultMap">
-        select id, user_name, name, age, sex, birthday, create_time, update_time from user limit #{offset}, #{pageSize};
+    <!--
+        sql语句动态生成的时候，使用${}
+        sql语句中某个参数进行站位的时候使用#{}
+        column：数据库中的列名
+        property：Java实体类中的属性名
+    -->
+    <select id="getByPager" parameterType="User" resultMap="BaseResultMap">
+        select id, user_name, name, age, sex, birthday, create_time, update_time from user limit ${(pageIndex - 1) * pageSize}, #{pageSize};
     </select>
 
     <!--
-        id：唯一标识，在同一命名空间下保持一致
-        parameterType：参数的类型
-        keyColumn：指定数据库的主键
-        keyProperty：主键对应的类属性名
+        2.insert
+            insert的几个属性说明：
+                id：唯一标识，在同一命名空间下保持一致
+                parameterType：参数的类型
+                useGeneratedKeys：开启主键回写
+                keyColumn：指定数据库的主键
+                keyProperty：主键对应的类属性名
     -->
     <insert id="insert" parameterType="User">
         <selectKey keyColumn="id" keyProperty="id" resultType="string" order="BEFORE">
@@ -47,6 +63,11 @@
         insert into user(id, user_name, password, name, age, sex, birthday, create_time, update_time) values (#{id}, #{userName}, #{password}, #{name}, #{age}, #{sex}, #{birthday}, now(), now());
     </insert>
 
+    <!--
+        3.update
+            id属性：当前名称空间下statement的唯一标识（必须属性）；
+            parameterType：传入的参数类型，可以忽略
+    -->
     <update id="update" parameterType="User">
         update user
         <trim prefix="set" suffixOverrides=",">
@@ -62,6 +83,123 @@
     </update>
 
     <delete id="delete" parameterType="String">
-        delete from user where id = #{id}
+        delete from user where id = #{id};
     </delete>
+
+    <!--
+    使用mapper接口不用谢接口实现类即可完成数据库操作，非常简单，也是官方所推荐的使用方法。
+
+    使用mapper接口的必须具备以下几个条件：
+        1.xml的mapper的namespace必须mapper接口的全路径一致
+        2.xml的mapper接口的方法名必须与sql定义的id保持一致
+        3.xml的mapper接口中方法的输出参数类型必须和sql定义的resultType一致
+    -->
+    <select id="getBySex" parameterType="Integer" resultMap="BaseResultMap">
+        select id, user_name, name, age, sex, birthday, create_time, update_time from user where sex = #{sex};
+    </select>
+
+    <!--  模糊查询  -->
+    <!--
+        方法1：sql中字符串拼接(缺点，如果没有查询字段则无法查询)
+            select * from user where user_name like concat(concat('%', #{text}, '%'));
+        方法2：<if test></if>
+            select * from user
+            <if test="keyword != '' and keyword != null ">
+                where user_name like '%'||#{keyword}||'%'
+            </if>
+            ;
+        方法3：使用${..}代替#{..}
+            select * from user where user_name like '%${keyword}}%';
+    -->
+    <select id="fuzzyQuery" resultMap="BaseResultMap">
+        select id, user_name, name, age, sex, birthday, create_time, update_time from user
+        <where>
+            <if test="keyword != '' || keyword != null">
+                user_name like '%${keyword}%' or name like '%${keyword}%'
+            </if>
+        </where>
+        ;
+    </select>
+
+    <!--
+    动态sql
+        mybatis的一个强大的特性之一通常是它的动态SQL能力。提供了OGNL表达式动态生成SQL的功能。动态SQL有：
+            1.if
+            2.choose, when, otherwise
+            3.where, set
+            4.foreach
+    -->
+    <select id="queryUserList" resultType="User" resultMap="BaseResultMap">
+        select id, user_name, name, age, sex, birthday, create_time, update_time from user where sex = 0
+        <if test="userName != null and userName.trim() != ''">
+            and user_name = #{userName}
+        </if>
+        ;
+    </select>
+    <select id="queryUserByNameOrAge" resultType="User" resultMap="BaseResultMap">
+        select id, user_name, name, age, sex, birthday, create_time, update_time from user where sex = 1
+    <!--
+        1.一旦有条件成功的when，后续的when则不会执行
+        2.当所有的when都不执行时，才会执行otherwise
+    -->
+        <choose>
+            <when test="name != null and name.trim() != ''">
+                and name like '%${name}%'
+            </when>
+            <when test="age != null">
+                and age = #{age}
+            </when>
+            <otherwise>
+                and name = '大石头'
+            </otherwise>
+        </choose>
+        ;
+    </select>
+
+    <select id="queryUserByNameAndAge" resultMap="BaseResultMap">
+        select id, user_name, name, age, sex, birthday, create_time, update_time from user
+        <where>
+            <if test="name != null and name.trim() != ''">
+                and name like '%${name}%'
+            </if>
+            <if test="age != null">
+                and age >= #{age}
+            </if>
+        </where>
+        ;
+    </select>
+    <select id="queryUserByIds" resultMap="BaseResultMap">
+        select id, user_name, name, age, sex, birthday, create_time, update_time from user where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
+    <!--
+        缓存
+            1.一级缓存
+                mybatis的一级缓存的作用域是session，当openSession()后，如果执行相同的SQL（相同语句和参数），mybatis不进行执行SQL，而不是从缓存中命中返回。
+                原理：mybatis执行查询时首先去缓存区命中，如果命中直接返回，没有命中则执行SQL，从数据库中查询
+                在mybatis中，一级缓存默认是开启的，并且一直无法关闭。可以使用sqlSession.clearCache();可以强制清除缓存。但执行update、insert、delete的时候会清除缓存
+                一级缓存满足条件：1.同一个session中  2.相同的SQL和参数
+            2.二级缓存
+                mybatis的二级缓存的作用域是一个mapper的namespace，同一个namespace中查询sql可以从缓存中命中。
+                开启二级缓存：<mapper namespace="User">
+                                <cache />
+                            </mapper>
+                注意：开启二级缓存，必须序列化Java类
+                关闭二级缓存：不开启，或者在全局的mybatis-config.xml中去关闭二级缓存。在settings中cacheEnabled = true
+
+                <cache eviction="FIFO" flushInterval="60000" size="512" readOnly="true" />
+                这个更高级的配置差创建了一个FIFO缓存，并每隔60秒刷新，存数结果对象或列表的512个引用，而且返回的对象被认为是只读的，因为在不同线程中的调用者之间修改它们会导致冲突
+                可用的收回策略：
+                    LRU - 最近最少使用的：移除最长时间不被使用的对象
+                    FIFO - 先进先出：按对象进入缓存的顺序来移除它们
+                    SOFT - 软引用：移除基于垃圾回收器状态和软引用规则的对象
+                    WEAK - 弱引用：更积极地移除基于垃圾收集器状态和弱引用规则的对象
+                默认的是LRU。
+                flushInterval(刷新间隔)：可以被设置为任意额正整数，而且它们代表一个合理的毫秒数形式的时间段。默认情况是不设置，也就是没有刷新间隔，缓存仅仅调用语句时刷新。
+                size(引用数目)：可以被设置为任意正整数，要记住你缓存的对象数目和你运行环境的可用内存资源数目。默认值是1024。
+                readOnly(只读)：可以被设置为true或false只读的缓存会给所有调用者返回缓存对象的相同实例。因此这些对象不能被修改。这提供了很重要的性能优势，可读写的缓存会返回缓存对象的拷贝（通过序列化）。这会慢一些，但是安全，因此默认是false
+    -->
 </mapper>

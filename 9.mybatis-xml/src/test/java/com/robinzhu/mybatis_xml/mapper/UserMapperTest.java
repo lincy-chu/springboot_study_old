@@ -1,6 +1,7 @@
 package com.robinzhu.mybatis_xml.mapper;
 
 import com.robinzhu.mybatis_xml.entity.User;
+import com.robinzhu.mybatis_xml.enums.SexEnum;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,14 +37,37 @@ public class UserMapperTest {
     @Test
     public void insert() throws ParseException {
         User user = new User();
-        user.setUserName("王五");
+        user.setUserName("王石头");
         user.setPassword("12345678");
-        user.setName("二狗子");
-        user.setAge(18);
-        user.setSex(1);
+        user.setName("石头");
+        user.setAge(60);
+        SexEnum sex = SexEnum.Female;
+        user.setSex(sex.getIndex());
         SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
-        user.setBirthday(date.parse("2019-09-02"));
+        user.setBirthday(date.parse("1988-08-08"));
         userMapper.insert(user);
+
+        User user1 = new User();
+        user1.setUserName("章泽天");
+        user1.setPassword("12345678");
+        user1.setName("奶茶");
+        user1.setAge(10);
+        SexEnum sex1 = SexEnum.Female;
+        user1.setSex(sex1.getIndex());
+        SimpleDateFormat date1 = new SimpleDateFormat("yyyy-MM-dd");
+        user1.setBirthday(date1.parse("2009-06-08"));
+        userMapper.insert(user1);
+
+        User user2 = new User();
+        user2.setUserName("李世民");
+        user2.setPassword("12345678");
+        user2.setName("小军");
+        user2.setAge(18);
+        SexEnum sex2 = SexEnum.Female;
+        user2.setSex(sex2.getIndex());
+        SimpleDateFormat date2 = new SimpleDateFormat("yyyy-MM-dd");
+        user2.setBirthday(date2.parse("1981-08-08"));
+        userMapper.insert(user2);
     }
 
     @Test
@@ -78,5 +102,57 @@ public class UserMapperTest {
         Integer pageSize = 1;
         List<User> users = userMapper.getByPager(pageIndex * pageSize, 10);
         users.forEach(System.out::println);
+    }
+
+    @Test
+    public void getBySex() {
+        SexEnum sex = SexEnum.Female;
+        List<User> users = userMapper.getBySex(sex.getIndex());
+        users.forEach(System.out::println);
+    }
+
+    @Test
+    public void fuzzyQuery() {
+        String keyword = "1";
+        List<User> users = userMapper.fuzzyQuery(keyword);
+        users.forEach(System.out::println);
+    }
+
+    @Test
+    public void queryUserList() {
+        List<User> users = userMapper.queryUserList("章泽天");
+        users.forEach(System.out::println);
+    }
+
+    @Test
+    public void queryUserByNameOrAge() {
+        List<User> users = this.userMapper.queryUserByNameOrAge(null, 12);
+        users.forEach(System.out::println);
+    }
+
+
+    @Test
+    public void queryUserByNameAndAge() {
+        List<User> users = userMapper.queryUserByNameAndAge("二狗子", 16);
+        users.forEach(System.out::println);
+    }
+
+    @Test
+    public void queryUserByIds() {
+        List<User> users = userMapper.queryUserByIds(new String[]{"137a698ed21711e9a2827ab725937387", "7341b0b8d21511e9a2827ab725937387"});
+        users.forEach(System.out::println);
+    }
+
+    @Test
+    public void testSession() {
+        // 测试一级缓存
+        System.out.println(this.userMapper.fuzzyQuery("二狗子1"));
+        System.out.println(this.userMapper.fuzzyQuery("二狗子1"));
+    }
+
+    @Test
+    public void testSecondSession() {
+        // 测试二级缓存
+        System.out.println(this.userMapper.fuzzyQuery("章泽天"));
     }
 }
