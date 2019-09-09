@@ -29,7 +29,7 @@ public class OrderMapperTest {
         Order order = new Order();
         order.setUserId("1373dc54d21711e9a2827ab725937387");
         String orderNumber = CommonUtils.bornOrderNo();
-        order.setOrderNumber(orderNumber);
+        order.setOrderNo(orderNumber);
         orderMapper.createOrder(order);
     }
 

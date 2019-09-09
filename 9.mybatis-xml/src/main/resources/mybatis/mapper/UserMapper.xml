@@ -2,22 +2,22 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.robinzhu.mybatis_xml.mapper.UserMapper">
     <resultMap id="BaseResultMap" type="User">
-        <id property="id" column="id" jdbcType="VARCHAR" />
+        <id property="id" column="u_id" jdbcType="VARCHAR" />
         <result property="userName" column="user_name" jdbcType="VARCHAR" />
         <result property="name" column="name" jdbcType="VARCHAR" />
         <result property="age" column="age" jdbcType="INTEGER" />
         <result property="sex" column="sex" jdbcType="INTEGER" />
         <result property="birthday" column="birthday" jdbcType="DATE" />
-        <result property="createTime" column="create_time" jdbcType="TIME" />
-        <result property="updateTime" column="update_time" jdbcType="TIME" />
+        <result property="userCreateTime" column="user_create_time" jdbcType="TIME" />
+        <result property="userUpdateTime" column="user_update_time" jdbcType="TIME" />
     </resultMap>
 
     <select id="findAll" resultMap="BaseResultMap">
-        select id, user_name, name, age, sex, birthday, create_time, update_time from user;
+        select u_id, user_name, name, age, sex, birthday, create_time, update_time from user;
     </select>
     
     <select id="getOne" parameterType="String" resultMap="BaseResultMap">
-        select id, user_name, name, age, sex, birthday, create_time, update_time from user where id = #{id};
+        select u_id, user_name, name, age, sex, birthday, create_time, update_time from user where u_id = #{id};
     </select>
 
     <!--
@@ -32,7 +32,7 @@
                resultType：将结果集映射为Java的对象类型，必须（和resultMap二选一）
     -->
     <select id="login" resultType="User" resultMap="BaseResultMap">
-        select id, user_name, name, age, sex, birthday, create_time, update_time from user where user_name = #{userName} and password = #{password};
+        select u_id, user_name, name, age, sex, birthday, user_create_time, user_update_time from user where user_name = #{userName} and password = #{password};
     </select>
     <select id="userCount" resultType="java.lang.Integer">
         select count(*) from user;
@@ -44,7 +44,7 @@
         property：Java实体类中的属性名
     -->
     <select id="getByPager" parameterType="User" resultMap="BaseResultMap">
-        select id, user_name, name, age, sex, birthday, create_time, update_time from user limit ${(pageIndex - 1) * pageSize}, #{pageSize};
+        select u_id, user_name, name, age, sex, birthday, user_create_time, user_update_time from user limit ${(pageIndex - 1) * pageSize}, #{pageSize};
     </select>
 
     <!--
@@ -57,10 +57,10 @@
                 keyProperty：主键对应的类属性名
     -->
     <insert id="insert" parameterType="User">
-        <selectKey keyColumn="id" keyProperty="id" resultType="string" order="BEFORE">
+        <selectKey keyColumn="uId" keyProperty="uId" resultType="string" order="BEFORE">
             select replace(uuid(), '-', '')
         </selectKey>
-        insert into user(id, user_name, password, name, age, sex, birthday, create_time, update_time) values (#{id}, #{userName}, #{password}, #{name}, #{age}, #{sex}, #{birthday}, now(), now());
+        insert into user(u_id, user_name, password, name, age, sex, birthday, user_create_time, user_update_time) values (#{uId}, #{userName}, #{password}, #{name}, #{age}, #{sex}, #{birthday}, now(), now());
     </insert>
 
     <!--
@@ -83,7 +83,7 @@
     </update>
 
     <delete id="delete" parameterType="String">
-        delete from user where id = #{id};
+        delete from user where u_id = #{id};
     </delete>
 
     <!--
@@ -95,7 +95,7 @@
         3.xml的mapper接口中方法的输出参数类型必须和sql定义的resultType一致
     -->
     <select id="getBySex" parameterType="Integer" resultMap="BaseResultMap">
-        select id, user_name, name, age, sex, birthday, create_time, update_time from user where sex = #{sex};
+        select u_id, user_name, name, age, sex, birthday, user_create_time, user_update_time from user where sex = #{sex};
     </select>
 
     <!--  模糊查询  -->
@@ -112,7 +112,7 @@
             select * from user where user_name like '%${keyword}}%';
     -->
     <select id="fuzzyQuery" resultMap="BaseResultMap">
-        select id, user_name, name, age, sex, birthday, create_time, update_time from user
+        select u_id, user_name, name, age, sex, birthday, create_time, update_time from user
         <where>
             <if test="keyword != '' || keyword != null">
                 user_name like '%${keyword}%' or name like '%${keyword}%'
@@ -130,14 +130,14 @@
             4.foreach
     -->
     <select id="queryUserList" resultType="User" resultMap="BaseResultMap">
-        select id, user_name, name, age, sex, birthday, create_time, update_time from user where sex = 0
+        select u_id, user_name, name, age, sex, birthday, user_create_time, user_update_time from user where sex = 0
         <if test="userName != null and userName.trim() != ''">
             and user_name = #{userName}
         </if>
         ;
     </select>
     <select id="queryUserByNameOrAge" resultType="User" resultMap="BaseResultMap">
-        select id, user_name, name, age, sex, birthday, create_time, update_time from user where sex = 1
+        select u_id, user_name, name, age, sex, birthday, user_create_time, user_update_time from user where sex = 1
     <!--
         1.一旦有条件成功的when，后续的when则不会执行
         2.当所有的when都不执行时，才会执行otherwise
@@ -157,7 +157,7 @@
     </select>
 
     <select id="queryUserByNameAndAge" resultMap="BaseResultMap">
-        select id, user_name, name, age, sex, birthday, create_time, update_time from user
+        select u_id, user_name, name, age, sex, birthday, user_create_time, user_update_time from user
         <where>
             <if test="name != null and name.trim() != ''">
                 and name like '%${name}%'
@@ -169,7 +169,7 @@
         ;
     </select>
     <select id="queryUserByIds" resultMap="BaseResultMap">
-        select id, user_name, name, age, sex, birthday, create_time, update_time from user where id in
+        select u_id, user_name, name, age, sex, birthday, user_create_time, user_update_time from user where u_id in
         <foreach collection="ids" item="id" open="(" close=")" separator=",">
             #{id}
         </foreach>
@@ -202,4 +202,26 @@
                 size(引用数目)：可以被设置为任意正整数，要记住你缓存的对象数目和你运行环境的可用内存资源数目。默认值是1024。
                 readOnly(只读)：可以被设置为true或false只读的缓存会给所有调用者返回缓存对象的相同实例。因此这些对象不能被修改。这提供了很重要的性能优势，可读写的缓存会返回缓存对象的拷贝（通过序列化）。这会慢一些，但是安全，因此默认是false
     -->
+
+    <!--
+        如果sql语句中出现'<'的解决方案
+        1.使用xml中的字符实体
+            &lt;     <     小于
+            &gt;     >     大于
+            &amp;    &     和号
+            &spos;   '     省略号
+            &quot;   "     引号
+
+         2.使用<![CDATA[ < ]]>
+    -->
+    <select id="queryUserByDateRange" resultType="User" resultMap="BaseResultMap">
+        select u_id, user_name, name, age, sex, birthday, user_create_time, user_update_time from user where birthday &gt;= #{startDate} and birthday &lt;= #{endDate};
+    </select>
+
+    <select id="queryUserByBirthdayInRange" resultType="User" resultMap="BaseResultMap">
+        select u_id, user_name, name, age, sex, birthday, user_create_time, user_update_time from user where <![CDATA[
+            birthday >= #{startDate} and birthday <= #{endDate}
+        ]]>
+    </select>
+
 </mapper>

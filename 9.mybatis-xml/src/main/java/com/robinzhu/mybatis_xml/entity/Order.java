@@ -2,6 +2,7 @@ package com.robinzhu.mybatis_xml.entity;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
@@ -26,11 +27,13 @@ import java.util.List;
 @Data
 public class Order {
     // 订单id
-    private String id;
+    private String orId;
     // 用户id
+    @NotNull(message = "userId不能为空")
     private String userId;
     // 订单号
-    private String orderNumber;
+    @NotNull(message = "orderNo不能为空")
+    private String orderNo;
     // 创建时间
     private LocalDateTime createTime;
     // 更新时间

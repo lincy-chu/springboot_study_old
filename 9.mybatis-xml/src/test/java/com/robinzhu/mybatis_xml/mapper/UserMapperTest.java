@@ -155,4 +155,18 @@ public class UserMapperTest {
         // 测试二级缓存
         System.out.println(this.userMapper.fuzzyQuery("章泽天"));
     }
+
+    @Test
+    public void queryUserByDateRange() throws ParseException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        List<User> users = userMapper.queryUserByDateRange(dateFormat.parse("2002-08-08 00:00:00"), dateFormat.parse("2018-10-08 23:59:59"));
+        users.forEach(System.out::println);
+    }
+
+    @Test
+    public void queryUserByBirthdayInRange() throws ParseException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        List<User> users = userMapper.queryUserByBirthdayInRange(dateFormat.parse("2002-08-08 00:00:00"), dateFormat.parse("2018-10-08 23:59:59"));
+        users.forEach(System.out::println);
+    }
 }

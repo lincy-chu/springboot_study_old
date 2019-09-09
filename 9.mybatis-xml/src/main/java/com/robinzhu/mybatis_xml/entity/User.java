@@ -13,6 +13,6 @@ public class User {
     private Integer age;
     private Integer sex;
     private Date birthday;
-    private LocalDateTime createTime;
-    private LocalDateTime updateTime;
+    private LocalDateTime userCreateTime;
+    private LocalDateTime userUpdateTime;
 }

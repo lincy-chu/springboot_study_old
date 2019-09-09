@@ -9,9 +9,7 @@ import com.robinzhu.mybatis_xml.utils.CommonUtils;
 import com.robinzhu.mybatis_xml.utils.ResultUtil;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Create by zhudapeng
@@ -38,7 +36,7 @@ public class OrderController {
                 Order order = new Order();
                 order.setUserId(userId);
                 String orderNo = CommonUtils.bornOrderNo();
-                order.setOrderNumber(orderNo);
+                order.setOrderNo(orderNo);
                 orderMapper.createOrder(order);
                 return ResultUtil.success();
             }
@@ -51,8 +49,8 @@ public class OrderController {
         return ResultUtil.success(order);
     }
 
-    @PostMapping(value = "/queryOrderAndDetail")
-    public Result queryOrderAndDetail(@Param("orderNo") String orderNo) {
+    @GetMapping(value = "/queryOrderAndDetail/{orderNo}")
+    public Result queryOrderAndDetail(@PathVariable("orderNo") String orderNo) {
         Order order = orderMapper.queryOrderWithUserAndDetailByOrderNo(orderNo);
         return ResultUtil.success(order);
     }

@@ -2,20 +2,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.robinzhu.mybatis_xml.mapper.OrderDetailMapper">
     <resultMap id="orderDetailResultMap" type="OrderDetail">
-        <id column="id" property="id" />
-        <result column="order_id" property="orderId" />
+        <result column="od_id" property="odId" />
+        <result column="order_num" property="orderNum" />
         <result column="total_price" property="totalPrice"/>
         <result column="status" property="status"/>
     </resultMap>
     <insert id="insert" parameterType="OrderDetail">
-        <selectKey keyColumn="id" keyProperty="id" resultType="string" order="BEFORE">
+        <selectKey keyColumn="od_id" keyProperty="odId" resultType="string" order="BEFORE">
             select replace(uuid(), '-', '')
         </selectKey>
-        insert into tb_order_detail(id, order_id, total_price, status) VALUES (#{id}, #{orderId}, #{totalPrice}, #{status});
+        insert into tb_order_detail(od_id, order_num, total_price, status) VALUES (#{odId}, #{orderNum}, #{totalPrice}, #{status});
     </insert>
 
 
     <select id="getOrderDetailById" resultType="OrderDetail" resultMap="orderDetailResultMap">
-        select * from tb_order_detail where id = #{id};
+        select * from tb_order_detail where od_id = #{id};
     </select>
 </mapper>

@@ -12,3 +12,9 @@ mybatis:
   type-aliases-package: com.robinzhu.mybatis.entity
   config-location: classpath:mybatis/mybatis-config.xml
   mapper-locations: classpath:mybatis/mapper/*.xml
+logging:
+  level:
+    com:
+      robinzhu:
+        mybatis_xml:
+          entity: trace

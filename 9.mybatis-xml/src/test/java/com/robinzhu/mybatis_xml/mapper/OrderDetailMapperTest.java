@@ -20,7 +20,7 @@ public class OrderDetailMapperTest {
     @Test
     public void insert() {
         OrderDetail orderDetail = new OrderDetail();
-        orderDetail.setOrderId("e36a99db3a1341ea8f7a947af027a69f");
+        orderDetail.setOrderNum("e36a99db3a1341ea8f7a947af027a69f");
         orderDetail.setTotalPrice(10000.00);
         orderDetail.setStatus(1);
         orderDetailMapper.insert(orderDetail);

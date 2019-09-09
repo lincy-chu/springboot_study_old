@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.List;
 
 @Mapper
@@ -86,4 +87,20 @@ public interface UserMapper {
      * foreach的使用
      */
     List<User> queryUserByIds(@Param("ids") String[] ids);
+
+    /**
+     * 根据开始和截止时间查询生日在指定范围内的用户
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    List<User> queryUserByDateRange(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
+
+    /**
+     * 根据开始和截止时间查询生日在指定范围内的用户
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    List<User> queryUserByBirthdayInRange(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
 }

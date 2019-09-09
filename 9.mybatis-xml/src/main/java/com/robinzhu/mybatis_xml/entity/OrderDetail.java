@@ -9,9 +9,9 @@ import lombok.Data;
 @Data
 public class OrderDetail {
     // 详情id
-    private String id;
+    private String odId;
     // 订单id
-    private String orderId;
+    private String orderNum;
     // 总价
     private Double totalPrice;
     // 订单状态
